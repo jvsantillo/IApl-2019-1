@@ -1,31 +1,16 @@
-class Prestador:
+from pessoa import Pessoa
+
+class Prestador(Pessoa):
     
-    #Construtor:
-    def __init__ (self, name, cod, dtIni, dtFim):
-        self.name = name
-        self.cod = cod
-        self.dtIni = dtIni
-        self.dtFim = dtFim    
+    #Construtor com herança da classe pessoa:
+    def __init__ (self, pre_codigo, nome, dt_inc, dt_exec, codigo):
+        self.pre_codigo = pre_codigo
+        super().__init__(codigo, nome, dt_inc, dt_exec)
+           
     
     #Métodos Get e Set:
 
-    def get_name(self):
-        return self.name
-    def set_name(self,name):
-        self.name = name
-
-    def get_cod(self):
-        return self.cod
-    def set_cod(self,cod):
-        self.cod = cod
-
-    def get_dtIni(self):
-        return self.dtIni
-    def set_dtIni(self, dtIni):
-        self.dtIni = dtIni
-
-    def get_dtFim(self):
-        return self.dtFim  
-    def set_dtFim(self, dtFim):
-        self.dtFim = dtFim
-    
+    def get_pre_codigo(self):
+        return self.pre_codigo
+    def set_pre_codigo(self,pre_codigo):
+        self.pre_codigo = pre_codigo

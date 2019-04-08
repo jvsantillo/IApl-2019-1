@@ -22,7 +22,7 @@ class Especialidade:
     def get_esp_dtIni(self):
         return self.dt_ini
     def set_esp_dtIni(self, esp_dt_Ini):
-        self.dt_ini = dtIni
+        self.dt_ini = esp_dt_Ini
 
     def get_esp_dt_exec(self):
         return self.dt_exc  

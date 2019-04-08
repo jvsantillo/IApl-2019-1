@@ -37,7 +37,7 @@ CREATE TABLE dbo.Prestador
     Pre_Nome character varying(40) NOT NULL,
     Pre_Dt_Inc date NOT NULL,
     Pre_Dt_Exc date,
-    Pes_Codigo integer NOT NULL
+    Pes_Codigo integer NOT NULL,
     PRIMARY KEY (Pes_Codigo, Pre_Codigo)
 )
 WITH (

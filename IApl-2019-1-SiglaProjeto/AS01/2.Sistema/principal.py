@@ -1,5 +1,6 @@
 import psycopg2
 import codecs
+import datetime
 
 from prestador import Prestador
 from especialidade import Especialidade
@@ -11,6 +12,7 @@ tamanho_codigo_prestador = 0
 tamanho_nome_prestador = 0
 tamanho_codigo_especialidade = 0
 tamanho_descricao_especialidade = 0
+now = datetime.datetime.now()
 
 conn = psycopg2.connect("dbname=teste user=postgres password=postgres")
 cur = conn.cursor()
@@ -65,10 +67,6 @@ def obtenha_codigo_especialidade(cur, index):
 
     return codigo_especialidade
 
-#Gravando no banda de dados:
-
-def grave_codigo_prestador():
-
 #Escrevendo no arquivo no formato UTF-8:
 
 def gravar_arquivo(cur):
@@ -101,3 +99,15 @@ gravar_arquivo(cur)
 print("Arquivo gravado")
 
 
+# Gravando no banda de dados:
+
+def grave_arquivo_texto():
+    num_lines = 0
+    with open("escrita.txt", "r") as f:
+        for line in f:
+            num_lines += 1
+    for index in range(num_lines):
+        file = open("escrita.txt", "r")
+        line = file.readline()
+        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES({}, {}, {}, NULL )".format(line[110:117], line[118:139], now))
+        cur.execute("INSERT INTO dbo.PRESTADOR VALUES({}, {}, {}, NULL, NULL )".format(line[0:9], line[10:109], now))

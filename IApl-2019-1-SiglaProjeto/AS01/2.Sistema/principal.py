@@ -1,18 +1,19 @@
 import psycopg2
 import codecs
 import datetime
+import random
 
 from prestador import Prestador
 from especialidade import Especialidade
 from prestador_especialidade import Prestador_Especialidade
 
 #Inicializando conexão com o banco de dados POSTGRESQL:
-
 tamanho_codigo_prestador = 0
 tamanho_nome_prestador = 0
 tamanho_codigo_especialidade = 0
 tamanho_descricao_especialidade = 0
 now = datetime.datetime.now()
+cod_pessoa = random.randint(0, 99999)
 
 conn = psycopg2.connect("dbname=teste user=postgres password=postgres")
 cur = conn.cursor()
@@ -39,7 +40,8 @@ def obtenha_nome_prestador(cur, index):
     nome_prestador = cur.execute("SELECT pre_nome from dbo.Prestador WHERE pre_codigo = {}".format(
         obtenha_prestador_especialidade(cur, 0)[index]))
     nome_prestador = cur.fetchall()[0][0]
-    tamanho_nome_prestador = len(nome_prestador)
+    global tamanho_nome_prestador
+    tamanho_nome_prestador =  len(str(nome_prestador))
 
     return nome_prestador
 
@@ -47,7 +49,8 @@ def obtenha_codigo_prestador(cur, index):
     codigo_prestador = cur.execute("SELECT pre_codigo from dbo.Prestador WHERE pre_nome = '{}'".format(
         obtenha_prestadores(cur, 1)[index]))
     codigo_prestador = cur.fetchall()[0][0]
-    tamanho_codigo_prestador = len(codigo_prestador)
+    global tamanho_codigo_prestador
+    tamanho_codigo_prestador = len(str(codigo_prestador))
 
     return codigo_prestador
 
@@ -55,7 +58,8 @@ def obtenha_descricao_especialidade(cur,index):
     descricao_especialidade = cur.execute("SELECT esp_descricao from dbo.Especialidade WHERE esp_codigo = '{}'".format(
         obtenha_prestador_especialidade(cur, 1)[index]))
     descricao_especialidade = cur.fetchall()[0][0]
-    tamanho_descricao_especialidade = len(descricao_especialidade)
+    global tamanho_descricao_especialidade
+    tamanho_descricao_especialidade = len(str(descricao_especialidade))
 
     return descricao_especialidade
 
@@ -63,7 +67,8 @@ def obtenha_codigo_especialidade(cur, index):
     codigo_especialidade = cur.execute("SELECT esp_codigo from dbo.Especialidade WHERE esp_descricao = '{}'".format(
         obtenha_especialidades(cur, 1)[index]))
     codigo_especialidade = cur.fetchall()[0][0]
-    tamanho_codigo_especialidade = len(codigo_especialidade)
+    global tamanho_codigo_especialidade
+    tamanho_codigo_especialidade = len(str(codigo_especialidade))
 
     return codigo_especialidade
 
@@ -99,7 +104,7 @@ gravar_arquivo(cur)
 print("Arquivo gravado")
 
 
-# Gravando no banda de dados:
+# Gravando no banco de dados:
 
 def grave_arquivo_texto():
     num_lines = 0
@@ -107,7 +112,10 @@ def grave_arquivo_texto():
         for line in f:
             num_lines += 1
     for index in range(num_lines):
-        file = open("escrita.txt", "r")
+        file = open("leitura.txt", "r")
         line = file.readline()
-        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES({}, {}, {}, NULL )".format(line[110:117], line[118:139], now))
-        cur.execute("INSERT INTO dbo.PRESTADOR VALUES({}, {}, {}, NULL, NULL )".format(line[0:9], line[10:109], now))
+        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES('{}', '{}', '{}', NULL )".format(line[110:117], line[118:139], now))
+        cur.execute("INSERT INTO dbo.PRESTADOR VALUES('{}', '{}', '{}', NULL, '{}')".format(line[0:9], line[10:109], now, cod_pessoa))
+        conn.commit()
+
+grave_arquivo_texto()

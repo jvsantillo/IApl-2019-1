@@ -1,28 +1,12 @@
--- Criando a Base de Dados
-
-CREATE DATABASE PrestadorServico
-    WITH 
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1;
-
--- Criando o esquema 'dbo'
-	
-	CREATE SCHEMA dbo
-    AUTHORIZATION postgres;
-	
-ALTER DEFAULT PRIVILEGES IN SCHEMA dbo
-GRANT ALL ON TABLES TO postgres;
-
--- Criando as tabelas
+-- Criando as tabelas e fazendo uso das Sequences
 
 CREATE TABLE dbo.Pessoa
 (
-    Pes_Codigo integer NOT NULL,
-    Pes_Nome character varying(40) NOT NULL,
-    Pes_Dt_Inc date NOT NULL,
-    Pes_Dt_Exc date,
-    PRIMARY KEY (Pes_Codigo)
+    Pessoa_ID integer NOT NULL DEFAULT NEXTVAL('dbo.pessoaid_seq'),
+    Nome character varying(40) NOT NULL,
+    DataInclusao date NOT NULL,
+    DataExclusao date,
+    PRIMARY KEY (Pessoa_ID)
 )
 WITH (
     OIDS = FALSE
@@ -30,15 +14,17 @@ WITH (
 
 ALTER TABLE dbo.Pessoa
     OWNER to postgres;
-	
+
+------------------------------------------------------------------------------------------------
+
 CREATE TABLE dbo.Prestador
 (
-    Pre_Codigo integer NOT NULL,
-    Pre_Nome character varying(40) NOT NULL,
-    Pre_Dt_Inc date NOT NULL,
-    Pre_Dt_Exc date,
-    Pes_Codigo integer NOT NULL,
-    PRIMARY KEY (Pes_Codigo, Pre_Codigo)
+    Prestador_ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestadorid_seq'),
+    Nome character varying(40) NOT NULL,
+    DataInclusao date NOT NULL,
+    DataExclusao date,
+    Pessoa_ID integer NOT NULL,
+    PRIMARY KEY (Pessoa_ID, Prestador_ID)
 )
 WITH (
     OIDS = FALSE
@@ -46,14 +32,16 @@ WITH (
 
 ALTER TABLE dbo.Prestador
     OWNER to postgres;
-	
+
+------------------------------------------------------------------------------------------------
+
 CREATE TABLE dbo.Prestador_Especialidade
 (
-    Pes_Pre_Codigo integer NOT NULL,
-    Pes_Esp_Codigo integer NOT NULL,
-    Pes_Dt_Inc date NOT NULL,
-    Pes_Dt_Exc date,   
-    PRIMARY KEY (Pes_Pre_Codigo, Pes_Esp_Codigo)
+    ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestespecialidadeid_seq'),
+    ID_Especialidade integer NOT NULL,
+    DataInclusao date NOT NULL,
+    DataExclusao date,   
+    PRIMARY KEY (ID, ID_Especialidade )
 )
 WITH (
     OIDS = FALSE
@@ -62,13 +50,15 @@ WITH (
 ALTER TABLE dbo.Prestador_Especialidade
     OWNER to postgres;
 
+-------------------------------------------------------------------------------------------------
+
 CREATE TABLE dbo.Especialidade
 (
-    Esp_Codigo integer NOT NULL,
-    Esp_Descricao character varying(80) NOT NULL,
-    Esp_Dt_Inc date NOT NULL,
-    Esp_Dt_Exc date,
-    PRIMARY KEY (Esp_Codigo)
+    Especialidade_ID integer NOT NULL DEFAULT NEXTVAL('dbo.especialidadeid_seq'),
+    Descricao character varying(80) NOT NULL,
+    DataInclusao date NOT NULL,
+    DataExclusao date,
+    PRIMARY KEY (Especialidade_ID)
 )
 WITH (
     OIDS = FALSE

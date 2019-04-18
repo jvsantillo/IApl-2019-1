@@ -2,11 +2,11 @@
 
 CREATE TABLE dbo.Pessoa
 (
-    Pessoa_ID integer NOT NULL DEFAULT NEXTVAL('dbo.pessoaid_seq'),
+    PessoaID integer NOT NULL DEFAULT NEXTVAL('dbo.pessoaid_seq'),
     Nome character varying(40) NOT NULL,
     DataInclusao date NOT NULL,
     DataExclusao date,
-    PRIMARY KEY (Pessoa_ID)
+    PRIMARY KEY (PessoaID)
 )
 WITH (
     OIDS = FALSE
@@ -19,12 +19,12 @@ ALTER TABLE dbo.Pessoa
 
 CREATE TABLE dbo.Prestador
 (
-    Prestador_ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestadorid_seq'),
+    PrestadorID integer NOT NULL DEFAULT NEXTVAL('dbo.prestadorid_seq'),
     Nome character varying(40) NOT NULL,
     DataInclusao date NOT NULL,
     DataExclusao date,
-    Pessoa_ID integer NOT NULL,
-    PRIMARY KEY (Pessoa_ID, Prestador_ID)
+    PessoaID integer NOT NULL,
+    PRIMARY KEY (PessoaID, PrestadorID)
 )
 WITH (
     OIDS = FALSE
@@ -38,10 +38,10 @@ ALTER TABLE dbo.Prestador
 CREATE TABLE dbo.Prestador_Especialidade
 (
     ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestespecialidadeid_seq'),
-    ID_Especialidade integer NOT NULL,
+    IdEspecialidade integer NOT NULL,
     DataInclusao date NOT NULL,
     DataExclusao date,   
-    PRIMARY KEY (ID, ID_Especialidade )
+    PRIMARY KEY (ID, IdEspecialidade )
 )
 WITH (
     OIDS = FALSE
@@ -54,11 +54,11 @@ ALTER TABLE dbo.Prestador_Especialidade
 
 CREATE TABLE dbo.Especialidade
 (
-    Especialidade_ID integer NOT NULL DEFAULT NEXTVAL('dbo.especialidadeid_seq'),
+    EspecialidadeID integer NOT NULL DEFAULT NEXTVAL('dbo.especialidadeid_seq'),
     Descricao character varying(80) NOT NULL,
     DataInclusao date NOT NULL,
     DataExclusao date,
-    PRIMARY KEY (Especialidade_ID)
+    PRIMARY KEY (EspecialidadeID)
 )
 WITH (
     OIDS = FALSE

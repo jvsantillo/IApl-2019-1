@@ -35,7 +35,7 @@ ALTER TABLE dbo.Prestador
 
 ------------------------------------------------------------------------------------------------
 
-CREATE TABLE dbo.Prestador_Especialidade
+CREATE TABLE dbo.PrestadorEspecialidade
 (
     ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestespecialidadeid_seq'),
     prestadorEspecialidadeId integer NOT NULL,
@@ -47,7 +47,7 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE dbo.Prestador_Especialidade
+ALTER TABLE dbo.PrestadorEspecialidade
     OWNER to postgres;
 
 -------------------------------------------------------------------------------------------------

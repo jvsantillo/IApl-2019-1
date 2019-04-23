@@ -17,30 +17,30 @@ VALUES ('Marcos Antonio Rabelo', '08-09-1999', '10-01-2018');
 
 -- Populando a tabela dbo.Prestador
 
-INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, Pessoa_ID)
+INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, pessoaID)
 VALUES ('Ana Cristina Souza', '28-10-2016', '28-12-2017', 1);
 
-INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, Pessoa_ID)
+INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, pessoaID)
 VALUES ('Paulo Carvalho', '22-01-2019', NULL, 2);
 
-INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, Pessoa_ID)
+INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, pessoaID)
 VALUES ('Sérgio Pedro Henrique', '18-02-2003', NULL, 3);
 
-INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, Pessoa_ID)
+INSERT INTO dbo.Prestador (Nome, DataInclusao, DataExclusao, pessoaID)
 VALUES ('Marcos Antonio Rabelo', '20-12-2008', '10-01-2018', 4);
 
--- Populando a tabela dbo.Prestador_Especialidade
+-- Populando a tabela dbo.PrestadorEspecialidade
 
-INSERT INTO dbo.Prestador_Especialidade (ID_Especialidade, DataInclusao, DataExclusao)
+INSERT INTO dbo.PrestadorEspecialidade (prestadorEspecialidadeId, DataInclusao, DataExclusao)
 VALUES (1, '28-10-2016', NULL);
 
-INSERT INTO dbo.Prestador_Especialidade (ID_Especialidade, DataInclusao, DataExclusao)
+INSERT INTO dbo.PrestadorEspecialidade (prestadorEspecialidadeId, DataInclusao, DataExclusao)
 VALUES (2, '22-01-2019', NULL);
 
-INSERT INTO dbo.Prestador_Especialidade (ID_Especialidade, DataInclusao, DataExclusao)
+INSERT INTO dbo.PrestadorEspecialidade (prestadorEspecialidadeId, DataInclusao, DataExclusao)
 VALUES (3, '18-02-2003', '25-04-2010');
 
-INSERT INTO dbo.Prestador_Especialidade (ID_Especialidade, DataInclusao, DataExclusao)
+INSERT INTO dbo.PrestadorEspecialidade (prestadorEspecialidadeId, DataInclusao, DataExclusao)
 VALUES (4, '20-12-2008', '10-01-2018');
 
 -- Populando a tabela dbo.Especialidade

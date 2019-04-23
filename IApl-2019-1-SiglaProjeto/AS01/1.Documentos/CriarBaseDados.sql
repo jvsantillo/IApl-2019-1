@@ -38,10 +38,10 @@ ALTER TABLE dbo.Prestador
 CREATE TABLE dbo.Prestador_Especialidade
 (
     ID integer NOT NULL DEFAULT NEXTVAL('dbo.prestespecialidadeid_seq'),
-    IdEspecialidade integer NOT NULL,
+    prestadorEspecialidadeId integer NOT NULL,
     DataInclusao date NOT NULL,
     DataExclusao date,   
-    PRIMARY KEY (ID, IdEspecialidade )
+    PRIMARY KEY (ID, prestadorEspecialidadeId )
 )
 WITH (
     OIDS = FALSE

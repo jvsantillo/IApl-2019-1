@@ -3,14 +3,14 @@ from pessoa import Pessoa
 class Prestador(Pessoa):
     
     #Construtor com herança da classe pessoa:
-    def __init__ (self, pre_codigo, nome, dt_inc, dt_exec, codigo):
-        self.pre_codigo = pre_codigo
-        super().__init__(codigo, nome, dt_inc, dt_exec)
+    def __init__ (self, PrestadorID, Nome, DataInclusao, DataExclusao, PessoaID):
+        self.PrestadorID = PrestadorID
+        super().__init__(PessoaID, Nome, DataInclusao, DataExclusao)
            
     
     #Métodos Get e Set:
 
-    def get_pre_codigo(self):
-        return self.pre_codigo
-    def set_pre_codigo(self,pre_codigo):
-        self.pre_codigo = pre_codigo
+    def get_PrestadorID(self):
+        return self.PrestadorID
+    def set_PrestadorID(self,PrestadorID):
+        self.PrestadorID = PrestadorID

@@ -5,7 +5,7 @@ import random
 
 from prestador import Prestador
 from especialidade import Especialidade
-from prestador_especialidade import Prestador_Especialidade
+from PrestadorEspecialidade import PrestadorEspecialidade
 
 #Inicializando conexão com o banco de dados POSTGRESQL:
 tamanho_codigo_prestador = 0
@@ -15,7 +15,7 @@ tamanho_descricao_especialidade = 0
 now = datetime.datetime.now()
 cod_pessoa = random.randint(0, 99999)
 
-conn = psycopg2.connect("dbname=teste user=postgres password=postgres")
+conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
 cur = conn.cursor()
 
 def obtenha_pessoas(cur, coluna):
@@ -31,13 +31,13 @@ def obtenha_especialidades(cur, coluna):
     return [r[coluna] for r in cur.fetchall()]
 
 def obtenha_prestador_especialidade(cur, coluna):
-    cur.execute("SELECT * FROM dbo.Prestador_Especialidade;")
+    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
     return [r[coluna] for r in cur.fetchall()]
 
 #Obtendo dados para a escrita no arquivo:
 
 def obtenha_nome_prestador(cur, index):
-    nome_prestador = cur.execute("SELECT pre_nome from dbo.Prestador WHERE pre_codigo = {}".format(
+    nome_prestador = cur.execute("SELECT nome from dbo.Prestador WHERE prestadorid = {}".format(
         obtenha_prestador_especialidade(cur, 0)[index]))
     nome_prestador = cur.fetchall()[0][0]
     global tamanho_nome_prestador
@@ -46,7 +46,7 @@ def obtenha_nome_prestador(cur, index):
     return nome_prestador
 
 def obtenha_codigo_prestador(cur, index):
-    codigo_prestador = cur.execute("SELECT pre_codigo from dbo.Prestador WHERE pre_nome = '{}'".format(
+    codigo_prestador = cur.execute("SELECT prestadorid from dbo.Prestador WHERE nome = '{}'".format(
         obtenha_prestadores(cur, 1)[index]))
     codigo_prestador = cur.fetchall()[0][0]
     global tamanho_codigo_prestador
@@ -55,7 +55,7 @@ def obtenha_codigo_prestador(cur, index):
     return codigo_prestador
 
 def obtenha_descricao_especialidade(cur,index):
-    descricao_especialidade = cur.execute("SELECT esp_descricao from dbo.Especialidade WHERE esp_codigo = '{}'".format(
+    descricao_especialidade = cur.execute("SELECT descricao from dbo.Especialidade WHERE especialidadeid = '{}'".format(
         obtenha_prestador_especialidade(cur, 1)[index]))
     descricao_especialidade = cur.fetchall()[0][0]
     global tamanho_descricao_especialidade
@@ -64,7 +64,7 @@ def obtenha_descricao_especialidade(cur,index):
     return descricao_especialidade
 
 def obtenha_codigo_especialidade(cur, index):
-    codigo_especialidade = cur.execute("SELECT esp_codigo from dbo.Especialidade WHERE esp_descricao = '{}'".format(
+    codigo_especialidade = cur.execute("SELECT especialidadeid from dbo.Especialidade WHERE descricao = '{}'".format(
         obtenha_especialidades(cur, 1)[index]))
     codigo_especialidade = cur.fetchall()[0][0]
     global tamanho_codigo_especialidade
@@ -75,7 +75,7 @@ def obtenha_codigo_especialidade(cur, index):
 #Escrevendo no arquivo no formato UTF-8:
 
 def gravar_arquivo(cur):
-    cur.execute("SELECT * FROM dbo.Prestador_Especialidade;")
+    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
     number_rows = cur.rowcount
     
     file = codecs.open("escrita.txt", "w", "utf-8")
@@ -94,6 +94,7 @@ def gravar_arquivo(cur):
         file.write(obtenha_descricao_especialidade(cur, index))
         for index5 in range(30 - tamanho_descricao_especialidade):
             file.write(" ")
+        file.write("\n")
     
     file.close()
 
@@ -115,7 +116,7 @@ def grave_arquivo_texto():
         file = open("leitura.txt", "r")
         line = file.readline()
         cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES('{}', '{}', '{}', NULL )".format(line[110:117], line[118:139], now))
-        cur.execute("INSERT INTO dbo.PRESTADOR VALUES('{}', '{}', '{}', NULL, '{}')".format(line[0:9], line[10:109], now, cod_pessoa))
+        cur.execute("INSERT INTO dbo.PRESTADOR VALUES('{}', '{}', '{}', NULL, nextval('dbo.pessoaid_seq'))".format(line[0:9], line[10:109], now))
         conn.commit()
 
 grave_arquivo_texto()

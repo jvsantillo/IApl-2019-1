@@ -1,4 +1,3 @@
-    
 import psycopg2
 import codecs
 import datetime
@@ -7,7 +6,7 @@ import json
 
 from prestador import Prestador
 from especialidade import Especialidade
-from prestador_especialidade import Prestador_Especialidade
+from PrestadorEspecialidade import PrestadorEspecialidade
 
 #Inicializando conexão com o banco de dados POSTGRESQL:
 tamanho_codigo_prestador = 0
@@ -32,15 +31,15 @@ def obtenha_especialidades(cur, coluna):
     cur.execute("SELECT * FROM dbo.Especialidade;")
     return [r[coluna] for r in cur.fetchall()]
 
-def obtenha_prestador_especialidade(cur, coluna):
-    cur.execute("SELECT * FROM dbo.Prestador_Especialidade;")
+def obtenha_PrestadorEspecialidade(cur, coluna):
+    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
     return [r[coluna] for r in cur.fetchall()]
 
 #Obtendo dados para a escrita no arquivo:
 
 def obtenha_nome_prestador(cur, index):
     nome_prestador = cur.execute("SELECT pre_nome from dbo.Prestador WHERE pre_codigo = {}".format(
-        obtenha_prestador_especialidade(cur, 0)[index]))
+        obtenha_PrestadorEspecialidade(cur, 0)[index]))
     nome_prestador = cur.fetchall()[0][0]
     global tamanho_nome_prestador
     tamanho_nome_prestador =  len(str(nome_prestador))
@@ -58,7 +57,7 @@ def obtenha_codigo_prestador(cur, index):
 
 def obtenha_descricao_especialidade(cur,index):
     descricao_especialidade = cur.execute("SELECT esp_descricao from dbo.Especialidade WHERE esp_codigo = '{}'".format(
-        obtenha_prestador_especialidade(cur, 1)[index]))
+        obtenha_PrestadorEspecialidade(cur, 1)[index]))
     descricao_especialidade = cur.fetchall()[0][0]
     global tamanho_descricao_especialidade
     tamanho_descricao_especialidade = len(str(descricao_especialidade))
@@ -77,7 +76,7 @@ def obtenha_codigo_especialidade(cur, index):
 #Escrevendo no arquivo no formato UTF-8:
 
 def gravar_arquivo(cur):
-    cur.execute("SELECT * FROM dbo.Prestador_Especialidade;")
+    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
     number_rows = cur.rowcount
     
     file = codecs.open("escrita.txt", "w", "utf-8")
@@ -125,7 +124,7 @@ grave_arquivo_texto()
 #Montando arquivo JSON:
 
 def gerar_json(cur):
-    cur.execute("SELECT * FROM dbo.Prestador_Especialidade;")
+    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
     number_rows = cur.rowcount
 
     codigo_prestador = []
@@ -171,7 +170,3 @@ def lendo_json(path_file):
         conn.commit()
 
 lendo_json('json.txt')
-
-
-
-

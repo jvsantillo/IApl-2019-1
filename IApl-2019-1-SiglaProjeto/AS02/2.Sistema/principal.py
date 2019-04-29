@@ -16,7 +16,7 @@ tamanho_descricao_especialidade = 0
 now = datetime.datetime.now()
 cod_pessoa = random.randint(0, 99999)
 
-conn = psycopg2.connect("dbname=teste user=postgres password=postgres")
+conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
 cur = conn.cursor()
 
 def obtenha_pessoas(cur, coluna):
@@ -38,7 +38,7 @@ def obtenha_PrestadorEspecialidade(cur, coluna):
 #Obtendo dados para a escrita no arquivo:
 
 def obtenha_nome_prestador(cur, index):
-    nome_prestador = cur.execute("SELECT pre_nome from dbo.Prestador WHERE pre_codigo = {}".format(
+    nome_prestador = cur.execute("SELECT nome from dbo.Prestador WHERE prestadorid = {}".format(
         obtenha_PrestadorEspecialidade(cur, 0)[index]))
     nome_prestador = cur.fetchall()[0][0]
     global tamanho_nome_prestador
@@ -47,7 +47,7 @@ def obtenha_nome_prestador(cur, index):
     return nome_prestador
 
 def obtenha_codigo_prestador(cur, index):
-    codigo_prestador = cur.execute("SELECT pre_codigo from dbo.Prestador WHERE pre_nome = '{}'".format(
+    codigo_prestador = cur.execute("SELECT prestadorid from dbo.Prestador WHERE nome = '{}'".format(
         obtenha_prestadores(cur, 1)[index]))
     codigo_prestador = cur.fetchall()[0][0]
     global tamanho_codigo_prestador
@@ -56,7 +56,7 @@ def obtenha_codigo_prestador(cur, index):
     return codigo_prestador
 
 def obtenha_descricao_especialidade(cur,index):
-    descricao_especialidade = cur.execute("SELECT esp_descricao from dbo.Especialidade WHERE esp_codigo = '{}'".format(
+    descricao_especialidade = cur.execute("SELECT descricao from dbo.Especialidade WHERE especialidadeid = '{}'".format(
         obtenha_PrestadorEspecialidade(cur, 1)[index]))
     descricao_especialidade = cur.fetchall()[0][0]
     global tamanho_descricao_especialidade
@@ -65,7 +65,7 @@ def obtenha_descricao_especialidade(cur,index):
     return descricao_especialidade
 
 def obtenha_codigo_especialidade(cur, index):
-    codigo_especialidade = cur.execute("SELECT esp_codigo from dbo.Especialidade WHERE esp_descricao = '{}'".format(
+    codigo_especialidade = cur.execute("SELECT especialidadeid from dbo.Especialidade WHERE descricao = '{}'".format(
         obtenha_especialidades(cur, 1)[index]))
     codigo_especialidade = cur.fetchall()[0][0]
     global tamanho_codigo_especialidade
@@ -73,53 +73,6 @@ def obtenha_codigo_especialidade(cur, index):
 
     return codigo_especialidade
 
-#Escrevendo no arquivo no formato UTF-8:
-
-def gravar_arquivo(cur):
-    cur.execute("SELECT * FROM dbo.PrestadorEspecialidade;")
-    number_rows = cur.rowcount
-    
-    file = codecs.open("escrita.txt", "w", "utf-8")
-
-    for index in range(number_rows):
-        
-        file.write(str(obtenha_codigo_prestador(cur, index)))
-        for index2 in range(10 - tamanho_codigo_prestador):
-            file.write(" ")
-        file.write(obtenha_nome_prestador(cur, index))
-        for index3 in range(100 - tamanho_nome_prestador):
-            file.write(" ")
-        file.write(str(obtenha_codigo_especialidade(cur, index)))
-        for index4 in range(8 - tamanho_codigo_especialidade):
-            file.write(" ")
-        file.write(obtenha_descricao_especialidade(cur, index))
-        for index5 in range(30 - tamanho_descricao_especialidade):
-            file.write(" ")
-    
-    file.close()
-
-print("Gravando no arquivo")
-
-gravar_arquivo(cur)
-
-print("Arquivo gravado")
-
-
-# Gravando do arquivo de texto posicional para o banco de dados:
-
-def grave_arquivo_texto():
-    num_lines = 0
-    with open("escrita.txt", "r") as f:
-        for line in f:
-            num_lines += 1
-    for index in range(num_lines):
-        file = open("leitura.txt", "r")
-        line = file.readline()
-        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES('{}', '{}', '{}', NULL )".format(line[110:117], line[118:139], now))
-        cur.execute("INSERT INTO dbo.PRESTADOR VALUES('{}', '{}', '{}', NULL, '{}')".format(line[0:9], line[10:109], now, cod_pessoa))
-        conn.commit()
-
-grave_arquivo_texto()
 
 #Montando arquivo JSON:
 
@@ -147,12 +100,13 @@ def gerar_json(cur):
         "descricao_especialidades" : descricao_especialidade
     }
 
-        json_object = json.dumps(dict_json)
+    json_object = json.dumps(dict_json)
     
     print(json_object)
 
 print("Gerando JSON")
 gerar_json(cur)
+
 
 #Lendo JSON e gravando no banco:
 def lendo_json(path_file):
@@ -165,8 +119,9 @@ def lendo_json(path_file):
     descricao_especialidades = json_dict["descricao_especialidades"]
 
     for codigo_prestador, nome_prestador, codigo_especialidade, descricao_especialidade in zip(codigo_prestadores, nome_prestadores, codigo_especialidades, descricao_especialidades):
-        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES('{}', '{}', '{}', NULL )".format(codigo_especialidade, descricao_especialidade, now))
-        cur.execute("INSERT INTO dbo.PRESTADOR VALUES('{}', '{}', '{}', NULL, '{}')".format(codigo_prestador, nome_prestador, now, cod_pessoa))
+        cur.execute("INSERT INTO dbo.ESPECIALIDADE VALUES(nextval('dbo.especialidadeid_seq'), '{}', '{}', NULL )".format(descricao_especialidade, now))
+        cur.execute("INSERT INTO dbo.PRESTADOR VALUES(nextval('dbo.prestadorid_seq'), '{}', '{}', NULL, nextval('dbo.pessoaid_seq'))".format(nome_prestador, now))
         conn.commit()
 
 lendo_json('json.txt')
+

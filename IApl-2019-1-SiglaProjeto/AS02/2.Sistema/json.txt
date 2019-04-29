@@ -1,0 +1,1 @@
+{"codigo_prestadores": ["15", "25", "35", "45"], "nome_prestadores": ["Ana Cristina Souza", "Paulo Carvalho", "S\u00e9rgio Pedro Henrique", "Marcos Antonio Rabelo"], "codigo_especialidades": ["99", "21", "31", "41"], "descricao_especialidades": ["Cardiologia", "Cirurgiao Geral", "Esteticista de Estilo", "Medico de Rede Social"]}

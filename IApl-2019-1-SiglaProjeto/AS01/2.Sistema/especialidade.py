@@ -1,31 +1,30 @@
 class Especialidade:
     
     #Construtor:
-    def __init__ (self, codigo, descricao, dt_ini, dt_exc):
-        self.codigo = codigo
-        self.descricao = descricao
-        self.dt_ini = dt_ini
-        self.dt_exc = dt_exc    
+    def __init__ (self, EspecialidadeID, Descricao, DataInclusao, DataExclusao):
+        self.EspecialidadeID = EspecialidadeID
+        self.Descricao = Descricao
+        self.DataInclusao = DataInclusao
+        self.DataExclusao = DataExclusao    
     
     #Métodos Get e Set:
 
-    def get_esp_descricao(self):
-        return self.descricao
-    def set_esp_descricao(self,descricao):
-        self.descricao = descricao
+    def get_esp_Descricao(self):
+        return self.Descricao
+    def set_esp_Descricao(self,Descricao):
+        self.Descricao = Descricao
 
-    def get_esp_codigo(self):
-        return self.codigo
-    def set_esp_codigo(self,esp_codigo):
-        self.codigo = esp_codigo
+    def get_esp_EspecialidadeID(self):
+        return self.EspecialidadeID
+    def set_esp_EspecialidadeID(self,esp_EspecialidadeID):
+        self.EspecialidadeID = esp_EspecialidadeID
 
-    def get_esp_dtIni(self):
-        return self.dt_ini
-    def set_esp_dtIni(self, esp_dt_Ini):
-        self.dt_ini = esp_dt_Ini
+    def get_esp_DataInclusao(self):
+        return self.DataInclusao
+    def set_esp_DataInclusao(self, esp_DataInclusao):
+        self.DataInclusao = esp_DataInclusao
 
-    def get_esp_dt_exec(self):
-        return self.dt_exc  
-    def set_esp_dt_exec(self, esp_dt_exc):
-        self.dt_exc = esp_dt_exc
-    
+    def get_esp_DataExclusao(self):
+        return self.DataExclusao  
+    def set_esp_DataExclusao(self, esp_DataExclusao):
+        self.DataExclusao = esp_DataExclusao

@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import loader
+
+from .models import Person
 
 def index(request):
+    
     return HttpResponse("Hello, world. Index view")
 
 def person (request, person_id):
@@ -12,8 +16,15 @@ def update_person(request, person_id):
     return HttpResponse("In development... You are updating person ID %s." % person_id)
 def delete_person(request, person_id):
     return HttpResponse("In development... You are deleting person ID %s." % person_id)
+    
 def retrieve_persons(request):
-    return HttpResponse("In development...Here are all persons")
+    persons_list = Person.objects.order_by('-insertion_date')[:5]
+    template = loader.get_template('prestadores/retrieve_persons.html')
+    context = {
+        'persons_list': persons_list,
+    }
+
+    return HttpResponse(template.render(context, request))
 
 def supplier (request, supplier_id):
     return HttpResponse("You are looking at supplier %s" % supplier_id)

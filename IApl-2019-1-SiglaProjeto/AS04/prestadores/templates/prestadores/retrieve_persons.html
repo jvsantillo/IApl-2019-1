@@ -1,0 +1,9 @@
+{% if persons_list %}
+    <ul>
+    {% for person in persons_list %}
+        <li><a href="/prestadores/person/{{ person.id }}/">{{ person.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No persons are available.</p>
+{% endif %}

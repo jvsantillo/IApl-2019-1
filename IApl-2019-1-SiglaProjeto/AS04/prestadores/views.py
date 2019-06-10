@@ -9,14 +9,30 @@ def index(request):
     return HttpResponse("Hello, world. Index view")
 
 def person (request, person_id):
-    return HttpResponse("You are looking at person %s" % person_id)
+    person_obj = Person.objects.get(pk=person_id)
+    template = loader.get_template('prestadores/person.html')
+    context = {
+        'id': person_obj.id,
+        'name': person_obj.name,
+        'insertion_date': person_obj.insertion_date
+    }
+
+    return HttpResponse(template.render(context, request))
+
 def create_person(request):
     return HttpResponse("In development... You are creating a person")
 def update_person(request, person_id):
     return HttpResponse("In development... You are updating person ID %s." % person_id)
+
 def delete_person(request, person_id):
-    return HttpResponse("In development... You are deleting person ID %s." % person_id)
-    
+    person_obj = Person.objects.get(pk=person_id)
+    template = loader.get_template('prestadores/delete_person.html')
+    context = {
+        'id': person_obj.id
+    }
+    person_obj.delete()
+    return HttpResponse(template.render(context, request))
+
 def retrieve_persons(request):
     persons_list = Person.objects.order_by('-insertion_date')[:5]
     template = loader.get_template('prestadores/retrieve_persons.html')

@@ -2,14 +2,16 @@ import pytz
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from datetime import datetime, date, time
+from django.utils import timezone
 
 
 from .models import Person
 
 def index(request):
-    
-    return HttpResponse("Hello, world. Index view")
+    template = loader.get_template('prestadores/index.html')
+    context = {}
+
+    return HttpResponse(template.render(context, request))
 
 def person (request, person_id):
     person_obj = Person.objects.get(pk=person_id)
@@ -30,7 +32,8 @@ def update_person(request, person_id):
 def delete_person(request, person_id):
     person_obj = Person.objects.get(pk=person_id)
     template = loader.get_template('prestadores/delete_person.html')
-    person_obj.exclusion_date = datetime.now(pytz.utc).strftime("%Y-%m-%d %H:%M:%S")
+    print(person_obj.exclusion_date, person_obj.name)
+    Person.objects.filter(pk=person_id).update(exclusion_date=timezone.now())
     print(person_obj.exclusion_date)
     context = {
         'id': person_obj.id

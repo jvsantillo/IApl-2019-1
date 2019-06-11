@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'prestadores.apps.PrestadoresConfig',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -77,9 +78,9 @@ WSGI_APPLICATION = 'integracaoapps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'django'),
+        'NAME': os.environ.get('DB_NAME', 'Django'),
         'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'aula321'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
         'HOST': 'localhost',
         'PORT': '5432',
     }

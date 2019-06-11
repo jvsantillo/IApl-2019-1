@@ -5,7 +5,6 @@ class Person(models.Model):
     insertion_date = models.DateTimeField('Person insertion date')
     exclusion_date = models.DateTimeField('Person exclusion Date', null=True, blank=True)
 
-#REVIEW: Is supplier and person a 1-to-1 relationship? 
 class Supplier(models.Model):
     person = models.OneToOneField(
         Person,

@@ -1,6 +1,9 @@
+import pytz
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from datetime import datetime, date, time
+
 
 from .models import Person
 
@@ -27,14 +30,15 @@ def update_person(request, person_id):
 def delete_person(request, person_id):
     person_obj = Person.objects.get(pk=person_id)
     template = loader.get_template('prestadores/delete_person.html')
+    person_obj.exclusion_date = datetime.now(pytz.utc).strftime("%Y-%m-%d %H:%M:%S")
+    print(person_obj.exclusion_date)
     context = {
         'id': person_obj.id
     }
-    person_obj.delete()
     return HttpResponse(template.render(context, request))
 
 def retrieve_persons(request):
-    persons_list = Person.objects.order_by('-insertion_date')[:5]
+    persons_list = Person.objects.filter(exclusion_date__isnull=True).order_by('-insertion_date')[:5]
     template = loader.get_template('prestadores/retrieve_persons.html')
     context = {
         'persons_list': persons_list,

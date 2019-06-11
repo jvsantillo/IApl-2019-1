@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'integracaoapps.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'Django'),
+        'NAME': os.environ.get('DB_NAME', 'django'),
         'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'aula321'),
         'HOST': 'localhost',
         'PORT': '5432',
     }

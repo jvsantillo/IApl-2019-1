@@ -25,6 +25,7 @@ def person (request, person_id):
     return HttpResponse(template.render(context, request))
 
 def create_person(request):
+    request.GET('')
     return HttpResponse("In development... You are creating a person")
 def update_person(request, person_id):
     return HttpResponse("In development... You are updating person ID %s." % person_id)
@@ -72,3 +73,12 @@ def delete_expertise(request, expertise_id):
     return HttpResponse("In development... You are deleting expertise ID %s." % expertise_id)
 def retrieve_expertises(request):
     return HttpResponse("In development...Here are all expertises")
+
+def search_persons (request):
+    if request.method == 'GET':
+        active_persons_list = Person.objects.filter(name__contains= request.GET.get('search_box', None), exclusion_date__isnull=True).order_by('-insertion_date')[:5]
+        template = loader.get_template('prestadores/search_persons.html')
+        context = {
+            'active_persons_list': active_persons_list,
+        }
+    return HttpResponse(template.render(context, request))

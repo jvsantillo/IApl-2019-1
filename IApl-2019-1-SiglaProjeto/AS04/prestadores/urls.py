@@ -37,4 +37,7 @@ urlpatterns = [
     path('delete_expertise/<int:expertise_id>/', views.delete_expertise, name='delete_expertise'),
     #ex: /prestadores/retrieve_expertises
     path('retrieve_expertises/', views.retrieve_expertises, name='retrieve_expertises'),
+
+    #ex: /prestadores/retrieve_expertises
+    path('search_persons/', views.search_persons, name='search_persons'),
 ]

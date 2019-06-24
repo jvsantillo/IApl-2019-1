@@ -1,5 +1,10 @@
 {% extends "prestadores/header.html" %}
 
 {% block content %}
-<h1>Hello. I'm with bootstrap</h1>
+
+<form type="get" action="search_persons" style="margin: 0">
+  <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+  <button id="search_submit" type="submit" >Submit</button>
+</form>
+
 {% endblock %}
